@@ -6,8 +6,36 @@
   <title>nivenza Connect</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r158/three.min.js"></script>
+  <style>
+    body, html {
+      margin: 0;
+      padding: 0;
+      overflow-x: hidden;
+      background: black;
+    }
+    #aurora-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: -1;
+    }
+    .content-wrapper {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+  </style>
 </head>
-<body class="bg-gray-900 min-h-screen flex items-center justify-center p-4">
+<body>
+  <div id="aurora-bg"></div>
+  <div class="content-wrapper">
   <div class="max-w-md w-full bg-white/10 backdrop-blur-xl rounded-2xl overflow-hidden shadow-2xl border border-white/20">
     <div class="relative h-64">
       <canvas
@@ -132,5 +160,122 @@
       }, 1500);
     });
   </script>
+
+  <script>
+    // Wait for DOM to be ready and Three.js to load
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if Three.js is loaded
+      if (typeof THREE === 'undefined') {
+        console.error('Three.js not loaded');
+        return;
+      }
+
+      let scene, camera, renderer, material;
+      let startTime = Date.now();
+
+      const vertexShader = `
+        varying vec2 vUv;
+        void main() {
+          vUv = uv;
+          gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        }
+      `;
+
+      const fragmentShader = `
+        uniform float iTime;
+        uniform vec2 iResolution;
+        varying vec2 vUv;
+
+        #define S smoothstep
+
+        vec4 Line(vec2 uv, float speed, float height, vec3 col) {
+          uv.y += S(1., 0., abs(uv.x)) * sin(iTime * speed + uv.x * height) * 0.2;
+          return vec4(S(0.06 * S(0.2, 0.9, abs(uv.x)), 0., abs(uv.y) - 0.004) * col, 1.0) * S(1., 0.3, abs(uv.x));
+        }
+
+        void main() {
+          vec2 uv = (vUv - 0.5) * vec2(iResolution.x / iResolution.y, 1.0);
+          vec4 O = vec4(0.);
+          
+          for (float i = 0.; i <= 5.; i += 1.) {
+            float t = i / 5.;
+            float timeOffset = iTime * 0.3 + t * 2.0;
+            
+            // Aurora color palette
+            vec3 auroraColor = vec3(
+              0.1 + 0.6 * sin(timeOffset + t * 3.14159),
+              0.3 + 0.7 * sin(timeOffset * 1.3 + t * 2.0),
+              0.4 + 0.6 * cos(timeOffset * 0.8 + t * 1.5)
+            );
+            
+            // Add some green-cyan aurora tones
+            auroraColor = mix(auroraColor, vec3(0.0, 0.8, 0.6), sin(timeOffset + t) * 0.5 + 0.5);
+            // Add purple-pink highlights
+            auroraColor = mix(auroraColor, vec3(0.7, 0.2, 0.9), cos(timeOffset * 0.7 + t * 1.2) * 0.3 + 0.3);
+            
+            O += Line(uv, 1. + t * 0.8, 4. + t, auroraColor);
+          }
+          
+          gl_FragColor = O;
+        }
+      `;
+
+      function init() {
+        try {
+          // Scene setup
+          scene = new THREE.Scene();
+          camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
+          
+          renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+          renderer.setPixelRatio(Math.min(window.devicePixelRatio * 2, 3));
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          renderer.setClearColor(0x000000, 0);
+          document.getElementById('aurora-bg').appendChild(renderer.domElement);
+
+          // Shader material
+          material = new THREE.ShaderMaterial({
+            vertexShader: vertexShader,
+            fragmentShader: fragmentShader,
+            uniforms: {
+              iTime: { value: 0 },
+              iResolution: { value: new THREE.Vector2(window.innerWidth * 2, window.innerHeight * 2) }
+            },
+            transparent: true
+          });
+
+          // Plane geometry
+          const geometry = new THREE.PlaneGeometry(2, 2);
+          const plane = new THREE.Mesh(geometry, material);
+          scene.add(plane);
+
+          animate();
+        } catch (error) {
+          console.error('Error initializing aurora background:', error);
+        }
+      }
+
+      function animate() {
+        requestAnimationFrame(animate);
+        
+        if (material && material.uniforms) {
+          material.uniforms.iTime.value = (Date.now() - startTime) * 0.001;
+          renderer.render(scene, camera);
+        }
+      }
+
+      function onWindowResize() {
+        if (renderer && material && material.uniforms) {
+          renderer.setSize(window.innerWidth, window.innerHeight);
+          material.uniforms.iResolution.value.set(window.innerWidth * 2, window.innerHeight * 2);
+        }
+      }
+
+      window.addEventListener('resize', onWindowResize);
+      
+      // Initialize after a short delay to ensure everything is loaded
+      setTimeout(init, 100);
+    });
+  </script>
+  </div>
 </body>
 </html>
