@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>nivenza Connect</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body class="bg-gray-900 min-h-screen flex items-center justify-center p-4">
+  <div class="max-w-md w-full bg-white/10 backdrop-blur-xl rounded-2xl overflow-hidden shadow-2xl border border-white/20">
+    <div class="relative h-64">
+      <canvas
+        id="cobe"
+        style="width: 100%; height: 100%"
+        width="1000"
+        height="1000"
+        class="absolute inset-0"
+      ></canvas>
+      <div class="absolute top-3 left-4 z-10">
+        <h2 class="text-2xl font-bold text-white">Global Network</h2>
+        <p class="text-white/70 text-sm">Connect with US</p>
+      </div>
+      <div class="absolute bottom-3 right-4 bg-black/30 backdrop-blur-md rounded-lg p-2 z-10">
+        <div class="flex space-x-3 text-xs text-white">
+          <div class="flex items-center">
+            <span class="w-3 h-3 rounded-full bg-pink-500 mr-1"></span>
+            <span>Main Hub</span>
+          </div>
+          <div class="flex items-center">
+            <span class="w-3 h-3 rounded-full bg-blue-400 mr-1"></span>
+            <span>Regional Office</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Contact Form -->
+    <div class="p-5 bg-black/30 border-t border-white/10">
+      <h3 class="text-white text-lg font-semibold mb-3">Get in touch</h3>
+      <form id="contactForm" class="space-y-4">
+        <div>
+          <label for="name" class="block text-xs text-white/60 mb-1">Name</label>
+          <input id="name" name="name" type="text" required placeholder="Your full name" class="w-full rounded-md bg-white/10 text-white placeholder-white/40 border border-white/10 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div>
+            <label for="phone" class="block text-xs text-white/60 mb-1">Contact Number</label>
+            <input id="phone" name="phone" type="tel" inputmode="tel" pattern="[0-9+\-() ]{7,}" required placeholder="e.g. +1 555 0123" class="w-full rounded-md bg-white/10 text-white placeholder-white/40 border border-white/10 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          </div>
+          <div>
+            <label for="email" class="block text-xs text-white/60 mb-1">Email</label>
+            <input id="email" name="email" type="email" required placeholder="you@example.com" class="w-full rounded-md bg-white/10 text-white placeholder-white/40 border border-white/10 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500" />
+          </div>
+        </div>
+        <div>
+          <label for="message" class="block text-xs text-white/60 mb-1">Message</label>
+          <textarea id="message" name="message" rows="4" required placeholder="Tell us briefly about your project..." class="w-full rounded-md bg-white/10 text-white placeholder-white/40 border border-white/10 px-3 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"></textarea>
+        </div>
+        <div class="pt-1">
+                     <div class="flex gap-3">
+            <button id="submitBtn" type="submit" class="relative overflow-hidden inline-flex items-center justify-center rounded-md bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 hover:scale-105 active:scale-[.98] hover:shadow-lg hover:shadow-indigo-500/25">
+              <span class="btn-label">Send Message</span>
+            </button>
+            <a href="index.html" class="inline-flex items-center justify-center rounded-md bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-300 hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/25 group">
+              <i class="fa-solid fa-arrow-left mr-2 transition-transform duration-300 group-hover:-translate-x-1"></i>
+              Back to Home
+            </a>
+          </div>
+            <span class="btn-spinner hidden absolute inset-0 grid place-items-center">
+              <svg class="animate-spin text-white" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-6.219-8.56"/></svg>
+            </span>
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script type="module">
+    import createGlobe from 'https://cdn.skypack.dev/cobe'
+
+    let phi = 0
+    let canvas = document.getElementById("cobe")
+
+    const globe = createGlobe(canvas, {
+      devicePixelRatio: 2,
+      width: 1000,
+      height: 1000,
+      phi: 0,
+      theta: 0.2,
+      dark: 1,
+      diffuse: 1.2,
+      scale: 1.1,
+      mapSamples: 16000,
+      mapBrightness: 6,
+      baseColor: [0.3, 0.3, 0.6],
+      markerColor: [1, 0.5, 1],
+      glowColor: [0.7, 0.7, 1],
+      offset: [0, 0],
+      markers: [
+        { location: [37.7595, -122.4367], size: 0.06 },
+        { location: [40.7128, -74.006], size: 0.03 },
+        { location: [51.5074, -0.1278], size: 0.03 },
+        { location: [35.6762, 139.6503], size: 0.03 },
+      ],
+      onRender: (state) => {
+        state.phi = phi
+        phi += 0.003
+      },
+    })
+  </script>
+
+  <script>
+    // Animated submit button demo; replace with real submission later
+    const form = document.getElementById('contactForm');
+    const submitBtn = document.getElementById('submitBtn');
+    const label = submitBtn?.querySelector('.btn-label');
+    const spinner = submitBtn?.querySelector('.btn-spinner');
+
+    form?.addEventListener('submit', (e) => {
+      e.preventDefault();
+      if (!submitBtn) return;
+      submitBtn.disabled = true;
+      spinner.classList.remove('hidden');
+      label.classList.add('opacity-0');
+      // Fake delay to show animation
+      setTimeout(() => {
+        spinner.classList.add('hidden');
+        label.classList.remove('opacity-0');
+        submitBtn.disabled = false;
+        form.reset();
+      }, 1500);
+    });
+  </script>
+</body>
+</html>
