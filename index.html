@@ -87,7 +87,7 @@
   <div class="content-container">
       <nav class="container mx-auto px-6 py-0 -mt-3">
       <div class="flex items-center justify-between">
-          <div class="flex items-center"><img src="assets/logo2.png" alt="Logo" class="h-44 w-auto object-contain"></div>
+          <div class="flex items-center"><img src="assets/logo main.png" alt="Logo" class="h-44 w-auto object-contain"></div>
           <!-- Desktop links -->
         <div class="hidden md:flex space-x-10 text-sm text-gray-300">
             <a href="#home" class="nav-link hover:text-white transition-colors">Home</a>
@@ -468,7 +468,7 @@
           <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-12 mb-16">
             <div class="lg:col-span-2">
               <div class="flex items-center mb-6">
-                <img src="assets/logo2.png" alt="Nivenza" class="h-40 md:h-48 lg:h-56 w-auto" />
+                <img src="assets/logo main.png" alt="Nivenza" class="h-40 md:h-48 lg:h-56 w-auto" />
                  
               </div>
               <p class="text-gray-400 font-extralight mb-6 max-w-sm">
@@ -541,7 +541,7 @@
     function splitTextToSpans(targetElement) { if (targetElement) { const text = targetElement.textContent; targetElement.innerHTML = ''; for (let character of text) { const span = document.createElement('span'); if (character === ' ') { span.innerHTML = '&nbsp;'; } else { span.textContent = character; } targetElement.appendChild(span); } } }
     splitTextToSpans(target);
 
-    setTimeout(() => { const loadingScreen = document.getElementById('loadingScreen'); const mainContent = document.getElementById('mainContent'); loadingScreen.classList.add('fade-out'); mainContent.classList.add('show'); setTimeout(() => { loadingScreen.style.display = 'none'; }, 500); }, 5000);
+    setTimeout(() => { const loadingScreen = document.getElementById('loadingScreen'); const mainContent = document.getElementById('mainContent'); loadingScreen.classList.add('fade-out'); mainContent.classList.add('show'); setTimeout(() => { loadingScreen.style.display = 'none'; }, 500); }, 3000);
 
     const yearEl = document.getElementById('year'); if (yearEl) yearEl.textContent = new Date().getFullYear();
 
