@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full antialiased">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Nivenza Contact</title>
+    <link rel="icon" type="image/png" href="assets/logo4.png">
+    <link rel="apple-touch-icon" href="assets/logo4.png">
+    <script>
+        // Create round favicon dynamically
+        window.addEventListener('load', function() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            canvas.width = 32;
+            canvas.height = 32;
+            
+            const img = new Image();
+            img.onload = function() {
+                // Create circular clipping
+                ctx.beginPath();
+                ctx.arc(16, 16, 16, 0, 2 * Math.PI);
+                ctx.clip();
+                
+                // Draw the image
+                ctx.drawImage(img, 0, 0, 32, 32);
+                
+                // Update favicon
+                const link = document.querySelector('link[rel="icon"]');
+                if (link) {
+                    link.href = canvas.toDataURL();
+                }
+            };
+            img.src = 'assets/logo4.png';
+        });
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin="">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+        }
+        
+        .content {
+            position: relative;
+            z-index: 20;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: white;
+        }
+        
+        .back-button {
+            position: fixed;
+            bottom: 50px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 30;
+            color: white;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            padding: 12px 24px;
+            border: 2px solid white;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            text-shadow: 0 0 10px rgba(255,255,255,0.3);
+        }
+        
+        .back-button:hover {
+            background: rgba(255,255,255,0.1);
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+    </style>
+</head>
+<body class="min-h-full bg-black text-zinc-100">
+    <!-- Page wrapper -->
+    <div class="relative">
+        <!-- Background animation -->
+        <div class="absolute inset-0 w-full h-full -z-10 overflow-hidden">
+            <div data-us-project="RDB30U4si21PyW2SOs69" class="absolute w-full h-[625px] top-0 left-0 -z-10"></div>
+        </div>
+        
+        <!-- Content -->
+        <div class="content">
+            <div style="text-align: center;">
+                <h1 style="font-size: 3rem; font-weight: bold; margin-bottom: 1rem; text-shadow: 0 0 20px rgba(255,255,255,0.5);">
+                    Coming Soon
+                </h1>
+                <p style="font-size: 1.2rem; opacity: 0.8;">
+                    Something amazing is in the works
+                </p>
+            </div>
+        </div>
+        
+        <!-- Back Button -->
+        <a href="index.html" class="back-button">
+            ← Back to Home
+        </a>
+    </div>
+
+    <!-- UnicornStudio Script for Falling Animation -->
+    <script type="text/javascript">
+        !function(){
+            if(!window.UnicornStudio){
+                window.UnicornStudio={isInitialized:!1};
+                var i=document.createElement("script");
+                i.src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v1.4.29/dist/unicornStudio.umd.js",
+                i.onload=function(){
+                    window.UnicornStudio.isInitialized||(UnicornStudio.init(),window.UnicornStudio.isInitialized=!0)
+                },
+                (document.head || document.body).appendChild(i)
+            }
+        }();
+    </script>
+</body>
+</html>
