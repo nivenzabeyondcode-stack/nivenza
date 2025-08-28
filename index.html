@@ -4,6 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Nivenza</title>
+  <link rel="icon" type="image/png" href="assets/logo4.png">
+  <link rel="apple-touch-icon" href="assets/logo4.png">
+  <script>
+    // Create round favicon dynamically
+    window.addEventListener('load', function() {
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      canvas.width = 32;
+      canvas.height = 32;
+      
+      const img = new Image();
+      img.onload = function() {
+        // Create circular clipping
+        ctx.beginPath();
+        ctx.arc(16, 16, 16, 0, 2 * Math.PI);
+        ctx.clip();
+        
+        // Draw the image
+        ctx.drawImage(img, 0, 0, 32, 32);
+        
+        // Update favicon
+        const link = document.querySelector('link[rel="icon"]');
+        if (link) {
+          link.href = canvas.toDataURL();
+        }
+      };
+      img.src = 'assets/logo4.png';
+    });
+  </script>
+  <style>
+    /* Create a round favicon using CSS */
+    link[rel="icon"] {
+      border-radius: 50% !important;
+      clip-path: circle(50% at 50% 50%);
+    }
+    
+    /* Alternative approach for round favicon */
+    .round-favicon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      overflow: hidden;
+      display: inline-block;
+    }
+  </style>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.5.2/css/all.min.css" />
